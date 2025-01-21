@@ -24,6 +24,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 include(cmake/fetch.cmake)
+add_subdirectory(src)
 add_subdirectory(apps)
 
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTING)
