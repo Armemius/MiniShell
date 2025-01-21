@@ -23,11 +23,9 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Install clang-format
-        run: sudo apt-get update && sudo apt-get install -y clang-format
-      - name: Install clang-tidy
-        run: sudo apt-get update && sudo apt-get install -y clang-tidy
-      - name: build
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+      - name: Build
         run: |
           mkdir build
           cd build
@@ -40,6 +38,7 @@ jobs:
         with:
           style: ".clang-format"
           tidy-checks: ".clang-tidy"
+          step-summary: true
           thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
 
   build-test:
