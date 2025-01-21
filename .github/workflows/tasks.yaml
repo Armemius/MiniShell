@@ -1,0 +1,60 @@
+name: Lint and Test
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+jobs:
+  lint-markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+      - name: Lint Markdown files
+        run: markdownlint '**/*.md'
+
+  lint-cpp:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+      - name: Install clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake -DEXPORT_COMPILE_COMMANDS=ON ..
+          make
+      - uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: ".clang-format"
+          tidy-checks: ".clang-tidy"
+          thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake .. 
+          make
+      - name: Run Tests
+        run: |
+          cd build
+          ctest --verbose
