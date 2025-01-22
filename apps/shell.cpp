@@ -1,17 +1,19 @@
-#include <iostream>
-
 #include <executor/executor.hpp>
+#include <iostream>
 #include <parser/tokenize.hpp>
 
-int main() {
+#include "executor/external.hpp"
 
+[[noreturn]] int main() {
   while (true) {
     std::string input;
     std::cout << "minsh> ";
     std::getline(std::cin, input);
 
     auto tokens = minsh::parser::tokenize(input);
-    minsh::executor::execute(tokens);
+    auto externalExecutor = minsh::executor::ExternalExecutor();
+
+    externalExecutor.execute(tokens);
   }
 
   return 0;

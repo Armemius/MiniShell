@@ -1,5 +1,4 @@
 #include <parser/tokenize.hpp>
-
 #include <sstream>
 
 std::vector<std::string> minsh::parser::tokenize(const std::string &input) {

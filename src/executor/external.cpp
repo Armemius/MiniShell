@@ -1,11 +1,12 @@
-#include <executor/executor.hpp>
-
-#include <cstdlib>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int minsh::executor::execute(const std::vector<std::string> &tokens) {
+#include <cstdlib>
+#include <executor/external.hpp>
+
+int minsh::executor::ExternalExecutor::execute(
+    const std::vector<std::string> &tokens) const {
   if (tokens.empty()) {
     return 0;
   }
@@ -29,4 +30,9 @@ int minsh::executor::execute(const std::vector<std::string> &tokens) {
   }
 
   return 0;
+}
+
+bool minsh::executor::ExternalExecutor::canExecute(
+    const std::vector<std::string> &tokens) const {
+  return false;
 }
