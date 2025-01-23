@@ -3,10 +3,15 @@
 #include <iostream>
 #include <parser/tokenize.hpp>
 
+#include "controller/executors/internal.hpp"
+
 [[noreturn]] int main() {
-  minsh::controller::ShellController controller;
-  controller.addExecutor(std::make_shared<minsh::executor::ExternalExecutor>());
-  controller.run();
+  auto controllerPtr = std::make_shared<minsh::controller::ShellController>();
+  controllerPtr->addExecutor(
+      std::make_shared<minsh::executor::InternalExecutor>(controllerPtr));
+  controllerPtr->addExecutor(
+      std::make_shared<minsh::executor::ExternalExecutor>());
+  controllerPtr->run();
 
   return 0;
 }
