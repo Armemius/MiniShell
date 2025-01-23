@@ -7,6 +7,7 @@
 void minsh::controller::ShellController::run() {
   running = true;
   std::optional<double> prev_time = std::nullopt;
+  int prev_code = EXIT_SUCCESS;
 
   while (running) {
     if (char cwd[1024]; getcwd(cwd, sizeof(cwd)) != nullptr) {
@@ -14,10 +15,11 @@ void minsh::controller::ShellController::run() {
       if (prev_time.has_value()) {
         std::cout << " took \033[0;33m" << prev_time.value() << "\033[0ms";
       }
-      std::cout << std::endl << "\033[0;31m$\033[0m " << std::flush;
+    }
+    if (prev_code != EXIT_SUCCESS) {
+      std::cout << std::endl << "\033[0;31m$\033[0m ";
     } else {
-      std::cout << "\033[0;31mminsh>\033[0m ";
-      break;
+      std::cout << std::endl << "\033[0;32m$\033[0m ";
     }
 
     std::string input;
@@ -28,15 +30,10 @@ void minsh::controller::ShellController::run() {
     }
 
     auto tokens = parser::tokenize(input);
-    if (tokens.empty()) {
-      continue;
-    }
 
     const auto start_time = std::chrono::high_resolution_clock::now();
 
-    if (int code = execute(tokens); code != EXIT_SUCCESS) {
-      std::cerr << "minsh: command failed with code " << code << std::endl;
-    }
+    prev_code = execute(tokens);
 
     const auto end_time = std::chrono::high_resolution_clock::now();
 
