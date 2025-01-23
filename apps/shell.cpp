@@ -1,18 +1,12 @@
+#include <controller/controller.hpp>
 #include <controller/executors/external.hpp>
 #include <iostream>
 #include <parser/tokenize.hpp>
 
 [[noreturn]] int main() {
-  while (true) {
-    std::string input;
-    std::cout << "minsh> ";
-    std::getline(std::cin, input);
-
-    auto tokens = minsh::parser::tokenize(input);
-    auto externalExecutor = minsh::executor::ExternalExecutor();
-
-    externalExecutor.execute(tokens);
-  }
+  minsh::controller::ShellController controller;
+  controller.addExecutor(std::make_shared<minsh::executor::ExternalExecutor>());
+  controller.run();
 
   return 0;
 }

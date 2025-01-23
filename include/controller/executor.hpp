@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace minsh::executor {
+class Executor;
+
+typedef std::shared_ptr<Executor> executor_ptr;
 
 class Executor {
  public:
