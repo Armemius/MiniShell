@@ -2,7 +2,9 @@ name: Lint and Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ development ]
+  pull_request:
+    branches: [ main, development ]
 
 jobs:
   lint-markdown:
@@ -55,25 +57,3 @@ jobs:
         run: |
           cd build
           ctest --verbose
-
-  deploy-doxygen:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install build dependencies
-        run: sudo apt-get update && sudo apt-get install -y doxygen
-      - name: Generate Doxygen Documentation
-        run: |
-          mkdir build
-          cd build
-          cmake -DBUILD_DOCS=ON ..
-          make
-          make doc
-      - name: Deploy Doxygen Documentation
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/docs/html
