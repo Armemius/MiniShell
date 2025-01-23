@@ -5,9 +5,6 @@
 #include <vector>
 
 namespace minsh::executor {
-class Executor;
-
-typedef std::shared_ptr<Executor> executor_ptr;
 
 class Executor {
  public:
@@ -21,5 +18,7 @@ class Executor {
   [[nodiscard]] virtual int execute(
       const std::vector<std::string> &tokens) const = 0;
 };
+
+typedef std::shared_ptr<Executor> executor_ptr;
 
 }  // namespace minsh::executor
