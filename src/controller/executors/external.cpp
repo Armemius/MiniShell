@@ -2,8 +2,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include <controller/executors/external.hpp>
 #include <cstdlib>
-#include <executor/external.hpp>
 
 int minsh::executor::ExternalExecutor::execute(
     const std::vector<std::string> &tokens) const {

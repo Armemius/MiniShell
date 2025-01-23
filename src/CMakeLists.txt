@@ -5,5 +5,5 @@ macro(add_shell_library lib_name dir)
   target_include_directories(${lib_name} PUBLIC "${PROJECT_SOURCE_DIR}/include")
 endmacro()
 
+add_shell_library(shell-controller controller)
 add_shell_library(shell-parser parser)
-add_shell_library(shell-executor executor)

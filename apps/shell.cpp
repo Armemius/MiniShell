@@ -1,8 +1,6 @@
-#include <executor/executor.hpp>
+#include <controller/executors/external.hpp>
 #include <iostream>
 #include <parser/tokenize.hpp>
-
-#include "executor/external.hpp"
 
 [[noreturn]] int main() {
   while (true) {
