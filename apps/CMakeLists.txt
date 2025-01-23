@@ -1,2 +1,2 @@
-add_executable(shell shell.cpp)
-target_link_libraries(shell PRIVATE shell-parser shell-controller)
+add_executable(msh shell.cpp)
+target_link_libraries(msh PRIVATE shell-parser shell-controller)
