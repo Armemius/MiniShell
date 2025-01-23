@@ -16,6 +16,11 @@ static int changeDirectoryCommand(const std::vector<std::string>& tokens) {
     return EXIT_FAILURE;
   }
 
+  if (tokens.size() > 2) {
+    std::cerr << "minsh: cd: too many arguments" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   if (chdir(tokens[1].c_str()) == -1) {
     std::cerr << "minsh: cd: " << tokens[1] << ": No such file or directory"
               << std::endl;
@@ -25,8 +30,15 @@ static int changeDirectoryCommand(const std::vector<std::string>& tokens) {
   return EXIT_SUCCESS;
 }
 
-static int printWorkingDirectoryCommand() {
+static int printWorkingDirectoryCommand(
+    const std::vector<std::string>& tokens) {
   char cwd[1024];
+
+  if (tokens.size() > 1) {
+    std::cerr << "minsh: pwd: too many arguments" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   if (getcwd(cwd, sizeof(cwd)) == nullptr) {
     std::cerr << "minsh: pwd: error getting current working directory"
               << std::endl;

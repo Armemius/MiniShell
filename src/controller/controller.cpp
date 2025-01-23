@@ -85,7 +85,8 @@ void minsh::controller::ShellController::addExecutor(
 int minsh::controller::ShellController::execute(
     const std::vector<std::string>& tokens) const {
   if (tokens.empty()) {
-    return EXIT_SUCCESS;
+    std::cerr << "minsh: empty command" << std::endl;
+    return EXIT_FAILURE;
   }
 
   for (const auto& executor : executors) {
@@ -93,7 +94,6 @@ int minsh::controller::ShellController::execute(
       return executor->execute(tokens);
     }
   }
-
   std::cerr << "minsh: command not found: " << tokens[0] << std::endl;
   return EXIT_FAILURE;
 }
